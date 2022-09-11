@@ -124,8 +124,8 @@ public class CompanyControllerTest {
         List<Employee> employees2 = new ArrayList<>();
         employees2.add(new Employee(3, "allen", 20, "Male", 2000));
         employees2.add(new Employee(4, "bob", 22, "Male", 8000));
-        Company company1 = companyRepository.create(new Company(1, "Spring", employees1));
-        Company company2 = companyRepository.create(new Company(2, "Boot", employees2));
+        Company company1 = jpaCompanyRepository.save(new Company(1, "Spring", employees1));
+        Company company2 = jpaCompanyRepository.save(new Company(2, "Boot", employees2));
 
         String newCompanyJson = new ObjectMapper().writeValueAsString(new Company(1, "TETE", null));
 

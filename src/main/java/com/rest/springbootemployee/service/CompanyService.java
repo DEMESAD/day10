@@ -36,7 +36,7 @@ public class CompanyService {
     }
 
     public Company create(Company company) {
-        return companyRepository.create(company);
+        return jpaCompanyRepository.save(company);
     }
 
     public void delete(Integer companyId) {
@@ -44,7 +44,7 @@ public class CompanyService {
     }
 
     public Company update(Integer companyId, Company toUpdateCompany) {
-        Company existingCompany = companyRepository.findById(companyId);
+        Company existingCompany = this.findById(companyId);
         if (toUpdateCompany.getName() != null) {
             existingCompany.setName(toUpdateCompany.getName());
         }

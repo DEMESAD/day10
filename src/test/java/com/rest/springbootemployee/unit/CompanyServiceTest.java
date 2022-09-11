@@ -79,13 +79,13 @@ public class CompanyServiceTest {
         Company toUpdateCompany = new Company(2,companyName, employees2);
 
         int id = originalCompany.getId();
-        given(companyRepository.findById(id)).willReturn(originalCompany);
+        given(JpaCompanyRepository.findById(id)).willReturn(Optional.of(originalCompany));
 
         //when
         Company actualCompany = companyService.update(id, toUpdateCompany);
 
         //then
-        verify(companyRepository).findById(id);
+        verify(JpaCompanyRepository).findById(id);
         assertThat(actualCompany.getName(), equalTo(companyName));
     }
 
@@ -119,13 +119,14 @@ public class CompanyServiceTest {
 
         Company createdCompany = new Company(15,"Spring", employees);
 
-        given(companyRepository.create(originalCompany)).willReturn(createdCompany);
+        given(JpaCompanyRepository.save(originalCompany)).willReturn(createdCompany);
+
 
         // when
         Company actualCompany = companyService.create(originalCompany);
 
         // then
-        verify(companyRepository).create(originalCompany);
+        verify(JpaCompanyRepository).save(originalCompany);
         assertThat(actualCompany, equalTo(createdCompany));
     }
     
