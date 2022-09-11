@@ -45,12 +45,11 @@ public class EmployeeControllerTest {
         jpaEmployeeRepository.save(new Employee(10, "Susan", 22, "Female", 10000));
 
         //when & then
-        // [  {"id":2,"name":"Susan","age":22,"gender":"Female","salary":10000}  ]
-        client.perform(MockMvcRequestBuilders.get("/employees")) // http status 200
+        client.perform(MockMvcRequestBuilders.get("/employees"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.jsonPath("$", hasSize(1))) // check the size of array
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].id").isNumber()) // index of first element is 0
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].name").value("Susan")) // name
+                .andExpect(MockMvcResultMatchers.jsonPath("$", hasSize(1)))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].id").isNumber())
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].name").value("Susan"))
                 .andExpect(MockMvcResultMatchers.jsonPath("$[0].age").value(22))
                 .andExpect(MockMvcResultMatchers.jsonPath("$[0].gender").value("Female"))
                 .andExpect(MockMvcResultMatchers.jsonPath("$[0].salary").value(10000))
@@ -63,10 +62,9 @@ public class EmployeeControllerTest {
         Employee created = jpaEmployeeRepository.save(new Employee(10, "Susan", 22, "Female", 10000));
 
         //when & then
-        // { "id":2,"name":"Susan","age":22,"gender":"Female","salary":10000 } // json object
-        client.perform(MockMvcRequestBuilders.get("/employees/{id}", created.getId())) // http status 200
+        client.perform(MockMvcRequestBuilders.get("/employees/{id}", created.getId()))
                 .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.name").value("Susan")) // name
+                .andExpect(MockMvcResultMatchers.jsonPath("$.name").value("Susan"))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.age").value(22))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.gender").value("Female"))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.salary").value(10000));
@@ -80,11 +78,7 @@ public class EmployeeControllerTest {
         jpaEmployeeRepository.save(new Employee(12, "Robert", 20, "Male", 8000));
 
         //when & then
-//        [
-//                {"id":3,"name":"Leo","age":25,"gender":"Male","salary":9000},
-//                {"id":4,"name":"Robert","age":20,"gender":"Male","salary":8000}
-//        ]
-        client.perform(MockMvcRequestBuilders.get("/employees?gender={gender}", "Male")) // http status 200
+        client.perform(MockMvcRequestBuilders.get("/employees?gender={gender}", "Male"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$", hasSize(2)))
                 .andExpect(MockMvcResultMatchers.jsonPath("$[*].name", containsInAnyOrder("Leo", "Robert")))
@@ -101,11 +95,7 @@ public class EmployeeControllerTest {
         jpaEmployeeRepository.save(new Employee(12, "Robert", 20, "Male", 8000));
 
         //when & then
-//        [
-//                {"id":2,"name":"Susan","age":22,"gender":"Female","salary":10000}
-//                ,{"id":3,"name":"Leo","age":25,"gender":"Male","salary":9000}
-//                ]
-        client.perform(MockMvcRequestBuilders.get("/employees?page={page}&pageSize={pageSize}", 1, 2)) // http status 200
+        client.perform(MockMvcRequestBuilders.get("/employees?page={page}&pageSize={pageSize}", 1, 2))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$", hasSize(2)))
                 .andExpect(MockMvcResultMatchers.jsonPath("$[*].name", containsInAnyOrder("Susan", "Leo")))
@@ -117,7 +107,6 @@ public class EmployeeControllerTest {
     @Test
     void should_return_updated_employee_when_perform_put_given_employee() throws Exception {
         //given
-        //    requirement: update age and salary
         Employee employee = jpaEmployeeRepository.save(new Employee(10, "Susan", 22, "Female", 10000));
         Employee updateEmployee = new Employee(10, "Jim", 20, "Male", 55000);
 
@@ -134,7 +123,6 @@ public class EmployeeControllerTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.gender").value("Female"));
 
         // then
-        //        assertThat(employees, hasSize(1));
         final Employee updatedEmployee = jpaEmployeeRepository.findAll().get(0);
         assertThat(updatedEmployee.getName(), equalTo("Susan"));
         assertThat(updatedEmployee.getAge(), equalTo(20));

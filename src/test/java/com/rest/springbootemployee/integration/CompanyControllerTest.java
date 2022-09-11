@@ -20,7 +20,7 @@ import java.util.List;
 
 import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.hamcrest.Matchers.hasSize;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -213,9 +213,6 @@ public class CompanyControllerTest {
         employees2.add(new Employee(4, "bob", 22, "Male", 8000));
         Company company1 = jpaCompanyRepository.save(new Company(1, "Spring", employees1));
         Company company2 = jpaCompanyRepository.save(new Company(2, "Boot", employees2));
-
-
-
         int id = 0;
         client.perform(MockMvcRequestBuilders.get("/companies/{id}", id))
                 .andExpect(MockMvcResultMatchers.status().isNotFound());
