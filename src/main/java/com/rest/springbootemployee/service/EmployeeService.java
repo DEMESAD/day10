@@ -1,5 +1,7 @@
 package com.rest.springbootemployee.service;
 
+import com.rest.springbootemployee.controller.dto.EmployeeResponse;
+import com.rest.springbootemployee.controller.mapper.EmployeeMapper;
 import com.rest.springbootemployee.entity.Employee;
 import com.rest.springbootemployee.exception.NoEmployeeFoundException;
 import com.rest.springbootemployee.repository.JpaEmployeeRepository;
@@ -8,17 +10,22 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class EmployeeService {
     private JpaEmployeeRepository jpaEmployeeRepository;
+    private EmployeeMapper employeeMapper;
 
-    public EmployeeService(JpaEmployeeRepository jpaEmployeeRepository) {
+    public EmployeeService(JpaEmployeeRepository jpaEmployeeRepository, EmployeeMapper employeeMapper) {
         this.jpaEmployeeRepository = jpaEmployeeRepository;
     }
 
-    public List<Employee> findAll() {
-        return jpaEmployeeRepository.findAll();
+    public List<EmployeeResponse> findAll() {
+        return jpaEmployeeRepository.findAll()
+                .stream()
+                .map(employee -> employeeMapper.toResponse(employee))
+                .collect(Collectors.toList());
     }
 
     public Employee update(int id, Employee toUpdateEmployee) {
