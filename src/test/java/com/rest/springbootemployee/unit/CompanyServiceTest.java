@@ -14,6 +14,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
@@ -95,13 +96,12 @@ public class CompanyServiceTest {
         Company company = new Company(1,"Spring", employees);
         int id = company.getId();
 
-        given(companyRepository.findById(id)).willReturn(company);
-
+        given(JpaCompanyRepository.findById(id)).willReturn(Optional.of(company));
         // when
         Company actualCompany = companyService.findById(id);
 
         // then
-        verify(companyRepository).findById(id);
+        verify(JpaCompanyRepository).findById(id);
         assertThat(actualCompany, equalTo(company));
     }
 
