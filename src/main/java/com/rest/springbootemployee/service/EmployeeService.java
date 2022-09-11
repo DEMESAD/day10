@@ -47,13 +47,19 @@ public class EmployeeService {
                 .orElseThrow(NoEmployeeFoundException::new);
     }
 
-    public List<Employee> findByGender(String gender) {
-        return jpaEmployeeRepository.findByGender(gender);
+    public List<EmployeeResponse> findByGender(String gender) {
+        return jpaEmployeeRepository.findByGender(gender)
+                .stream()
+                .map(employee -> employeeMapper.toResponse(employee))
+                .collect(Collectors.toList());
     }
 
-    public List<Employee> findByPage(int page, int pageSize) {
+    public List<EmployeeResponse> findByPage(int page, int pageSize) {
         Pageable pageRequest = PageRequest.of(page-1, pageSize);
-        return jpaEmployeeRepository.findAll(pageRequest).toList();
+        return jpaEmployeeRepository.findAll(pageRequest).toList()
+                .stream()
+                .map(employee -> employeeMapper.toResponse(employee))
+                .collect(Collectors.toList());
     }
 
     public void delete(Integer id) {

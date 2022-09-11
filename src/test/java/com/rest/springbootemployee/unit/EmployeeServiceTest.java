@@ -1,5 +1,6 @@
 package com.rest.springbootemployee.unit;
 
+import com.rest.springbootemployee.controller.dto.EmployeeResponse;
 import com.rest.springbootemployee.entity.Employee;
 import com.rest.springbootemployee.repository.JpaEmployeeRepository;
 import com.rest.springbootemployee.service.EmployeeService;
@@ -98,7 +99,7 @@ public class EmployeeServiceTest {
         given(jpaEmployeeRepository.findByGender(gender)).willReturn(employees);
 
         // when
-        List<Employee> result = employeeService.findByGender(gender);
+        List<EmployeeResponse> result = employeeService.findByGender(gender);
 
         // should
         verify(jpaEmployeeRepository).findByGender(gender);
@@ -119,7 +120,7 @@ public class EmployeeServiceTest {
         given(jpaEmployeeRepository.findAll(pageRequest)).willReturn(pageObj);
 
         // when
-        List<Employee> result = employeeService.findByPage(page, pageSize);
+        List<EmployeeResponse> result = employeeService.findByPage(page, pageSize);
 
         // should
         verify(jpaEmployeeRepository).findAll(pageRequest);
