@@ -1,6 +1,7 @@
 package com.rest.springbootemployee.controller;
 
 import com.rest.springbootemployee.controller.dto.EmployeeRequest;
+import com.rest.springbootemployee.controller.dto.EmployeeResponse;
 import com.rest.springbootemployee.controller.mapper.EmployeeMapper;
 import com.rest.springbootemployee.entity.Employee;
 import com.rest.springbootemployee.service.EmployeeService;
@@ -28,8 +29,9 @@ public class EmployeeController {
     }
 
     @GetMapping("/{id}")
-    public Employee getById(@PathVariable Integer id) {
-        return employeeService.findById(id);
+    public EmployeeResponse getById(@PathVariable Integer id) {
+        Employee employee = employeeService.findById(id);
+        return employeeMapper.toResponse(employee);
     }
 
     @GetMapping(params = {"gender"})
@@ -45,7 +47,8 @@ public class EmployeeController {
     }
 
     @PutMapping("/{id}")
-    public Employee update(@PathVariable Integer id, @RequestBody Employee employee) {
+    public Employee update(@PathVariable Integer id, @RequestBody EmployeeRequest employeeRequest) {
+        Employee employee = employeeMapper.toEntity(employeeRequest);
         return employeeService.update(id, employee);
     }
     @DeleteMapping("/{id}")
