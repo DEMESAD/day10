@@ -5,6 +5,7 @@ import com.rest.springbootemployee.entity.Employee;
 import com.rest.springbootemployee.exception.NoCompanyFoundException;
 import com.rest.springbootemployee.repository.CompanyRepository;
 import com.rest.springbootemployee.repository.JpaCompanyRepository;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,6 +14,7 @@ import java.util.List;
 public class CompanyService {
     private CompanyRepository companyRepository;
     private JpaCompanyRepository jpaCompanyRepository;
+
 
     public CompanyService(CompanyRepository companyRepository, JpaCompanyRepository jpaCompanyRepository) {
         this.companyRepository = companyRepository;
@@ -25,7 +27,8 @@ public class CompanyService {
     }
 
     public List<Company> findByPage(Integer page, Integer pageSize) {
-        return companyRepository.findByPage(page, pageSize);
+        PageRequest pageable = PageRequest.of(page - 1, pageSize);
+        return this.jpaCompanyRepository.findAll(pageable).toList();
     }
 
     public Company findById(Integer companyId) {
@@ -49,7 +52,7 @@ public class CompanyService {
     }
 
     public List<Employee> getEmployees(Integer companyId) {
-        Company company = companyRepository.findById(companyId);
+        Company company = this.findById(companyId);
         return company.getEmployees();
     }
 

@@ -9,6 +9,9 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.ArrayList;
@@ -157,13 +160,17 @@ public class CompanyServiceTest {
         int page = 2;
         int pageSize = 2;
 
-        given(companyRepository.findByPage(2, 2)).willReturn(companies);
+        PageRequest pageRequest = PageRequest.of(page -1, pageSize);
+        Page pageObject = new PageImpl(companies);
+
+
+        given(JpaCompanyRepository.findAll(pageRequest)).willReturn(pageObject);
 
         //when
         List<Company> actualCompanies = companyService.findByPage(page, pageSize);
 
         //then
-        verify(companyRepository).findByPage(2, 2);
+        verify(JpaCompanyRepository).findAll(pageRequest);
         assertThat(actualCompanies, hasSize(2));
         assertThat(actualCompanies.get(0), equalTo(company1));
         assertThat(actualCompanies.get(1), equalTo(company2));
@@ -178,13 +185,13 @@ public class CompanyServiceTest {
         Company company = new Company(1,"Spring", employees);
         int id = company.getId();
 
-        given(companyRepository.findById(id)).willReturn(company);
+        given(JpaCompanyRepository.findById(id)).willReturn(Optional.of(company));
 
         //when
         List<Employee> actualEmployees = companyService.getEmployees(id);
 
         //then
-        verify(companyRepository).findById(id);
+        verify(JpaCompanyRepository).findById(id);
         assertThat(actualEmployees, hasSize(2));
         assertThat(actualEmployees.get(0), equalTo(employee1));
         assertThat(actualEmployees.get(1), equalTo(employee2));

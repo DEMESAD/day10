@@ -36,6 +36,7 @@ public class CompanyControllerTest {
     @BeforeEach
     public void clearDB() {
         companyRepository.clearAll();
+        jpaCompanyRepository.deleteAll();
     }
 
     @Test
@@ -174,10 +175,10 @@ public class CompanyControllerTest {
         employees4.add(new Employee(7, "edward", 20, "Male", 2000));
         employees4.add(new Employee(8, "ford", 22, "Male", 8000));
 
-        Company company1 = companyRepository.create(new Company(1, "Spring", employees1));
-        Company company2 = companyRepository.create(new Company(2, "Boot", employees2));
-        Company company3 = companyRepository.create(new Company(3, "TET", employees3));
-        Company company4 = companyRepository.create(new Company(4, "POP", employees4));
+        Company company1 = jpaCompanyRepository.save(new Company(1, "Spring", employees1));
+        Company company2 = jpaCompanyRepository.save(new Company(2, "Boot", employees2));
+        Company company3 = jpaCompanyRepository.save(new Company(3, "TET", employees3));
+        Company company4 = jpaCompanyRepository.save(new Company(4, "POP", employees4));
 
         int page = 2;
         int pageSize = 2;
@@ -280,10 +281,10 @@ public class CompanyControllerTest {
         employees4.add(new Employee(7, "edward", 20, "Male", 2000));
         employees4.add(new Employee(8, "ford", 22, "Male", 8000));
 
-        Company company1 = companyRepository.create(new Company(1, "Spring", employees1));
-        Company company2 = companyRepository.create(new Company(2, "Boot", employees2));
-        Company company3 = companyRepository.create(new Company(3, "TET", employees3));
-        Company company4 = companyRepository.create(new Company(4, "POP", employees4));
+        Company company1 = jpaCompanyRepository.save(new Company(1, "Spring", employees1));
+        Company company2 = jpaCompanyRepository.save(new Company(2, "Boot", employees2));
+        Company company3 = jpaCompanyRepository.save(new Company(3, "TET", employees3));
+        Company company4 = jpaCompanyRepository.save(new Company(4, "POP", employees4));
 
         int id = company3.getId();
 
