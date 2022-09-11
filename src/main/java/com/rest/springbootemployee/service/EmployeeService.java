@@ -19,6 +19,7 @@ public class EmployeeService {
 
     public EmployeeService(JpaEmployeeRepository jpaEmployeeRepository, EmployeeMapper employeeMapper) {
         this.jpaEmployeeRepository = jpaEmployeeRepository;
+        this.employeeMapper = employeeMapper;
     }
 
     public List<EmployeeResponse> findAll() {
