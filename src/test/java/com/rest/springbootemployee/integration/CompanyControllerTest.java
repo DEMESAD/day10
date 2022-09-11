@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.rest.springbootemployee.entity.Company;
 import com.rest.springbootemployee.entity.Employee;
 import com.rest.springbootemployee.repository.CompanyRepository;
+import com.rest.springbootemployee.repository.JpaCompanyRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +30,8 @@ public class CompanyControllerTest {
 
     @Autowired
     CompanyRepository companyRepository;
+    @Autowired
+    JpaCompanyRepository jpaCompanyRepository;
 
     @BeforeEach
     public void clearDB() {
@@ -45,13 +48,12 @@ public class CompanyControllerTest {
         List<Employee> employees2 = new ArrayList<>();
         employees2.add(new Employee(3, "allen", 20, "Male", 2000));
         employees2.add(new Employee(4, "bob", 22, "Male", 8000));
-        companyRepository.create(new Company(1, "Spring", employees1));
-        companyRepository.create(new Company(2, "Boot", employees2));
+        jpaCompanyRepository.save(new Company(1, "Spring", employees1));
+        jpaCompanyRepository.save(new Company(2, "Boot", employees2));
 
         //when & then
         client.perform(MockMvcRequestBuilders.get("/companies"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
-                .andDo(print())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.*", hasSize(2)))
                 .andExpect(MockMvcResultMatchers.jsonPath("$[0].name").value("Spring"))
                 .andExpect(MockMvcResultMatchers.jsonPath("$[0].employees[*].name", containsInAnyOrder("lili", "coco")))

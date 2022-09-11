@@ -2,6 +2,7 @@ package com.rest.springbootemployee.integration;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.rest.springbootemployee.entity.Employee;
+import com.rest.springbootemployee.repository.JpaCompanyRepository;
 import com.rest.springbootemployee.repository.JpaEmployeeRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -26,17 +27,16 @@ public class EmployeeControllerTest {
     @Autowired
     MockMvc client;
 
-//    @Autowired
-//    EmployeeRepository employeeRepository;
-
     @Autowired
     JpaEmployeeRepository jpaEmployeeRepository;
 
+    @Autowired
+    JpaCompanyRepository jpaCompanyRepository;
+
     @BeforeEach
     void cleanRepository() {
-//        System.out.println("clean repository");
-//        employeeRepository.clearAll();
         jpaEmployeeRepository.deleteAll();
+        jpaCompanyRepository.deleteAll();
     }
 
     @Test

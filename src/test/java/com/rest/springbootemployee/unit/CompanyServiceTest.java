@@ -3,6 +3,7 @@ package com.rest.springbootemployee.unit;
 import com.rest.springbootemployee.entity.Company;
 import com.rest.springbootemployee.entity.Employee;
 import com.rest.springbootemployee.repository.CompanyRepository;
+import com.rest.springbootemployee.repository.JpaCompanyRepository;
 import com.rest.springbootemployee.service.CompanyService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -24,6 +25,8 @@ import static org.mockito.Mockito.verify;
 public class CompanyServiceTest {
     @Mock
     CompanyRepository companyRepository;
+    @Mock
+    JpaCompanyRepository JpaCompanyRepository;
 
     @InjectMocks
     CompanyService companyService;
@@ -44,13 +47,13 @@ public class CompanyServiceTest {
 
         List<Company> companies = new ArrayList<>(Arrays.asList(company1,company2));
 
-        given(companyRepository.findAll()).willReturn(companies);
+        given(JpaCompanyRepository.findAll()).willReturn(companies);
 
         //when
         List<Company> actualCompanies = companyService.findAll();
 
         //then
-        verify(companyRepository).findAll();
+        verify(JpaCompanyRepository).findAll();
         assertThat(actualCompanies, hasSize(2));
         assertThat(actualCompanies.get(0), equalTo(company1));
         assertThat(actualCompanies.get(1), equalTo(company2));

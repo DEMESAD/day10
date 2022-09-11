@@ -20,7 +20,7 @@ public class CompanyService {
 
 
     public List<Company> findAll() {
-        return companyRepository.findAll();
+        return jpaCompanyRepository.findAll();
     }
 
     public List<Company> findByPage(Integer page, Integer pageSize) {

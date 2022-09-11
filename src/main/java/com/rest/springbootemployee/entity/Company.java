@@ -11,6 +11,9 @@ public class Company {
     private String name;
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Employee> employees;
+    public Company(){
+
+    }
 
     public Company(Integer id, String name, List<Employee> employees) {
         this.id = id;
