@@ -12,12 +12,10 @@ import java.util.List;
 
 @Service
 public class CompanyService {
-    private CompanyRepository companyRepository;
     private JpaCompanyRepository jpaCompanyRepository;
 
 
-    public CompanyService(CompanyRepository companyRepository, JpaCompanyRepository jpaCompanyRepository) {
-        this.companyRepository = companyRepository;
+    public CompanyService(JpaCompanyRepository jpaCompanyRepository) {
         this.jpaCompanyRepository = jpaCompanyRepository;
     }
 
@@ -40,7 +38,12 @@ public class CompanyService {
     }
 
     public void delete(Integer companyId) {
-        companyRepository.delete(companyId);
+        try{
+            jpaCompanyRepository.deleteById(companyId);
+        } catch
+        (Exception e){
+            throw new NoCompanyFoundException();
+        }
     }
 
     public Company update(Integer companyId, Company toUpdateCompany) {

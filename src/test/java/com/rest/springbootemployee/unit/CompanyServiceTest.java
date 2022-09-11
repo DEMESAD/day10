@@ -139,7 +139,7 @@ public class CompanyServiceTest {
         companyService.delete(companyId);
 
         //then
-        verify(companyRepository).delete(companyId);
+        verify(JpaCompanyRepository).deleteById(companyId);
     }
 
     @Test
