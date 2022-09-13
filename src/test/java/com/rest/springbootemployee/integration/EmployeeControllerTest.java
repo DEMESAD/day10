@@ -35,14 +35,15 @@ public class EmployeeControllerTest {
 
     @BeforeEach
     void cleanRepository() {
-        jpaEmployeeRepository.deleteAll();
         jpaCompanyRepository.deleteAll();
+        jpaEmployeeRepository.deleteAll();
+
     }
 
     @Test
     void should_get_all_employees_when_perform_get_given_employees() throws Exception {
         //given
-        jpaEmployeeRepository.save(new Employee(10, "Susan", 22, "Female", 10000));
+        jpaEmployeeRepository.save(new Employee(null, "Susan", 22, "Female", 10000));
 
         //when & then
         client.perform(MockMvcRequestBuilders.get("/employees"))
@@ -59,7 +60,7 @@ public class EmployeeControllerTest {
     @Test
     void should_employee_by_id_when_perform_get_given_employees() throws Exception {
         //given
-        Employee created = jpaEmployeeRepository.save(new Employee(10, "Susan", 22, "Female", 10000));
+        Employee created = jpaEmployeeRepository.save(new Employee(null, "Susan", 22, "Female", 10000));
 
         //when & then
         client.perform(MockMvcRequestBuilders.get("/employees/{id}", created.getId()))
@@ -73,9 +74,9 @@ public class EmployeeControllerTest {
     @Test
     void should_return_employees_when_perform_get_by_gender_given_employees() throws Exception {
         //given
-        jpaEmployeeRepository.save(new Employee(10, "Susan", 22, "Female", 10000));
-        jpaEmployeeRepository.save(new Employee(11, "Leo", 25, "Male", 9000));
-        jpaEmployeeRepository.save(new Employee(12, "Robert", 20, "Male", 8000));
+        jpaEmployeeRepository.save(new Employee(null, "Susan", 22, "Female", 10000));
+        jpaEmployeeRepository.save(new Employee(null, "Leo", 25, "Male", 9000));
+        jpaEmployeeRepository.save(new Employee(null, "Robert", 20, "Male", 8000));
 
         //when & then
         client.perform(MockMvcRequestBuilders.get("/employees?gender={gender}", "Male"))
@@ -90,9 +91,9 @@ public class EmployeeControllerTest {
     @Test
     void should_return_employees_when_perform_get_by_page_given_employees() throws Exception {
         //given
-        jpaEmployeeRepository.save(new Employee(10, "Susan", 22, "Female", 10000));
-        jpaEmployeeRepository.save(new Employee(11, "Leo", 25, "Male", 9000));
-        jpaEmployeeRepository.save(new Employee(12, "Robert", 20, "Male", 8000));
+        jpaEmployeeRepository.save(new Employee(null, "Susan", 22, "Female", 10000));
+        jpaEmployeeRepository.save(new Employee(null, "Leo", 25, "Male", 9000));
+        jpaEmployeeRepository.save(new Employee(null, "Robert", 20, "Male", 8000));
 
         //when & then
         client.perform(MockMvcRequestBuilders.get("/employees?page={page}&pageSize={pageSize}", 1, 2))
@@ -107,8 +108,8 @@ public class EmployeeControllerTest {
     @Test
     void should_return_updated_employee_when_perform_put_given_employee() throws Exception {
         //given
-        Employee employee = jpaEmployeeRepository.save(new Employee(10, "Susan", 22, "Female", 10000));
-        Employee updateEmployee = new Employee(10, "Jim", 20, "Male", 55000);
+        Employee employee = jpaEmployeeRepository.save(new Employee(null, "Susan", 22, "Female", 10000));
+        Employee updateEmployee = new Employee(null, "Jim", 20, "Male", 55000);
 
         String updateEmployeeJson = new ObjectMapper().writeValueAsString(updateEmployee);
 
